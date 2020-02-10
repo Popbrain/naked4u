@@ -1,0 +1,27 @@
+*.iml
+.gradle
+/local.properties
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Idea
+.idea
+*.iml
+*.iws
+*.ipr
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Build
+out
+build
+bin
+
+# Other
+*.log
+*.swp
+*.bak

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+
+                <Button
+                    android:id="@+id/d_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="15dp"
+                    android:text="DEBUG" />
+
+                <Button
+                    android:id="@+id/i_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="15dp"
+                    android:text="INFO" />
+
+                <Button
+                    android:id="@+id/w_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="15dp"
+                    android:text="WARN" />
+
+                <Button
+                    android:id="@+id/e_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:text="ERROR" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/clear_btn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:text="CLEAR" />
+
+            <Button
+                android:id="@+id/clear_filter_btn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:text="CLEAR FILTER" />
+
+            <Button
+                android:id="@+id/add_filter_btn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:text="ADD 'Naked' TO FILTER" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <io.popbrain.naked4u.ViewableLogger
+        android:id="@+id/viewable_logger"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#000"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+</LinearLayout>

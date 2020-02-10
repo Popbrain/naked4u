@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ViewableLogger">
+        <attr name="filter" format="string" />
+        <attr name="filterByType" format="enum">
+            <enum name="Verbose" value="0" />
+            <enum name="Debug" value="1" />
+            <enum name="Info" value="2" />
+            <enum name="Warn" value="3" />
+            <enum name="Error" value="4" />
+        </attr>
+        <attr name="debugColor" format="string" />
+        <attr name="infoColor" format="string" />
+        <attr name="warnColor" format="string" />
+        <attr name="errorColor" format="string" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,3 @@
+-dontwarn io.popbrain.naked4u
+-keep class io.popbrain.naked4u.** { *; }
+-keep interface io.popbrain.naked4u.** { *; }
