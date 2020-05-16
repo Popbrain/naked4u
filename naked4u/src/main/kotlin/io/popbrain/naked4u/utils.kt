@@ -15,8 +15,14 @@
  */
 package io.popbrain.naked4u
 
+import android.content.Context
+import android.graphics.Point
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
+import android.view.Display
+import android.view.Surface
+import android.view.WindowManager
 
 /**
  * utils
@@ -36,4 +42,31 @@ fun runOnUIThread(action: () -> Unit) {
 
 fun Int.toColorString(): String {
     return java.lang.String.format("#%06X", 0xFFFFFF and this)
+}
+
+class DisplayUtil(context: Context) {
+    private val mDisplay: Display = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).run {
+        defaultDisplay
+    }
+
+    val screenSize: Bound = screenSize()
+    val density: Float = density()
+    fun px2Dp(px: Int): Int = (px * density).toInt()
+
+    private fun screenSize(): Bound = with(Point().apply {
+        mDisplay.getSize(this)
+    }) {
+        Bound(x.toFloat(), y.toFloat(), mDisplay.rotation)
+    }
+
+    private fun density(): Float = DisplayMetrics().apply {
+        mDisplay.getMetrics(this)
+    }.density
+
+    open class Bound(val width: Float, val height: Float, val rotation: Int) {
+        val orientation: Int = when(rotation) {
+            Surface.ROTATION_90, Surface.ROTATION_270 -> 1
+            else -> 0
+        }
+    }
 }

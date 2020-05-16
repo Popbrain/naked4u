@@ -41,3 +41,16 @@ enum class LogType(val code: Int) {
         }
     }
 }
+
+class InnerLogger {
+
+    companion object {
+
+        val TAG = "InnerNaked4uLog"
+
+        fun d(log: String) = android.util.Log.d(TAG, log)
+        fun w(log: String) = android.util.Log.w(TAG, log)
+        fun e(log: String) = android.util.Log.e(TAG, log)
+        fun e(log: String, t: Throwable) = android.util.Log.e(TAG, log, t)
+    }
+}

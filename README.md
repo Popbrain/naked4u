@@ -24,7 +24,7 @@ repositories {
 
 dependencies
 ```gradle
-implementation 'com.github.popbrain:naked4u:1.0.0'
+implementation 'com.github.popbrain:naked4u:1.1.0'
 
 // naked4u using recyclerview
 implementation "androidx.recyclerview:recyclerview:+"
@@ -36,7 +36,7 @@ Define `io.popbrain.naked4u.ViewableLogger` to your xml of layout.
 
 res/layout/activity_main.xml
 ```xml
-<io.popbrain.naked4u.ViewableLogger
+<io.popbrain.naked4u.BasicViewableLogger
         android:id="@+id/viewable_logger"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

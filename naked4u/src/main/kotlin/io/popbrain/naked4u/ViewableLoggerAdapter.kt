@@ -30,8 +30,8 @@ import androidx.recyclerview.widget.RecyclerView
 class ViewableLoggerAdapter(context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     
     private val inflater = LayoutInflater.from(context)
-    val logs = ArrayList<Log>()
     private var rowBackgroundColor = "#000000"
+    val logs = ArrayList<Log>()
 
     fun setRowBackgroundColor(colorStr: String) {
         this.rowBackgroundColor = colorStr

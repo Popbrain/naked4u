@@ -23,6 +23,12 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -35,5 +41,5 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:+"
 
-    implementation project(':library')
+    implementation project(':naked4u')
 }

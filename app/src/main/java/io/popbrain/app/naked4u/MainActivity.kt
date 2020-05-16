@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import io.popbrain.naked4u.ViewableLogger
+import io.popbrain.naked4u.BasicViewableLogger
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,18 +30,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.clear_btn).setOnClickListener {
-            findViewById<ViewableLogger>(R.id.viewable_logger)
+            findViewById<BasicViewableLogger>(R.id.viewable_logger)
                 .clear()
         }
         findViewById<Button>(R.id.clear_filter_btn).setOnClickListener {
-            findViewById<ViewableLogger>(R.id.viewable_logger)
+            findViewById<BasicViewableLogger>(R.id.viewable_logger)
             .clearFilter()
         }
         findViewById<Button>(R.id.add_filter_btn).setOnClickListener {
-            findViewById<ViewableLogger>(R.id.viewable_logger)
+            findViewById<BasicViewableLogger>(R.id.viewable_logger)
                 .addFilter("Naked")
         }
-        findViewById<ViewableLogger>(R.id.viewable_logger)
-            .start()
+        findViewById<BasicViewableLogger>(R.id.viewable_logger).apply {
+            addExclusion(arrayOf("Toast", "Surface"))
+        }.start()
+
     }
 }

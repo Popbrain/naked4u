@@ -22,7 +22,12 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 /**
  * ViewableLoggerViewModel
@@ -33,29 +38,36 @@ class ViewableLoggerViewModel(context: Context,
                               attrs: AttributeSet? = null) {
 
     private var logReader: BufferedReader? = null
-    private var isStop = true
+    private var done = true
     private val filterWords = ArrayList<String>()
+    private val exclusionWords = ArrayList<String>()
+    private val defaultExclusionWords = ArrayList<String>().apply {
+        add(InnerLogger.TAG)
+        add("ViewRootImpl")
+        add("zygote64")
+    }
     private var filterType = LogType.VERBOSE
     private val logPatternStr =
         """^\d{2}-\d{2}\s*\d{2}:\d{2}:\d{2}.\d{3}\s*[0-9]*\s*[0-9]*\s([A-Z])\s*"""
     private val logPattern = Pattern.compile(logPatternStr)
     private var backgroundColor: String = "#000000"
+    private var thread: Thread? = null
     var listener: OnViewableLoggerListener? = null
     var debugColor = 0
     var infoColor = 0
     var warnColor = 0
     var errorColor = 0
+    private var startTime = Date(System.currentTimeMillis())
 
     init {
         attrs?.let {
             initAttr(context.applicationContext, it)
         }
-        val process = Runtime.getRuntime().exec("logcat")
-        this.logReader = BufferedReader(InputStreamReader(process.getInputStream()))
     }
 
     fun start() {
-        this.isStop = false
+        this.done = false
+        startTime = Date(System.currentTimeMillis())
         logging()
     }
     fun backgroundColor(background: Drawable) {
@@ -65,22 +77,44 @@ class ViewableLoggerViewModel(context: Context,
                 this.adapter.setRowBackgroundColor(this.backgroundColor)
             }
         } catch (e: java.lang.Exception){
-            android.util.Log.e("ViewableLogger", "toColorString()", e)
+            InnerLogger.e("toColorString()", e)
         }
     }
     fun addFilter(filter: String) = this.filterWords.add(filter)
     fun addFilter(filter: Array<String>) = this.filterWords.addAll(filter)
     fun clearFilter() = this.filterWords.clear()
+    fun addExclusion(exclude: String) = this.exclusionWords.add(exclude)
+    fun addExclusion(excludes: Array<String>) = this.exclusionWords.addAll(excludes)
+    fun clearExclusion() = this.exclusionWords.clear()
     fun filterByType(type: LogType) { this.filterType = type }
-    fun stop() { this.isStop = true }
-    fun clear() = adapter.clear()
+    fun stop() { this.done = true }
+    fun finish() {
+        this.logReader = null
+        this.thread = null
+    }
+    fun clear() {
+        adapter.clear()
+        startTime = Date(System.currentTimeMillis())
+    }
+
+    private fun getLogReader(): BufferedReader = with(Runtime.getRuntime().exec("logcat")) {
+        BufferedReader(InputStreamReader(getInputStream()))
+    }
 
     private fun logging() {
-        try {
-            Thread {
-                while (!isStop && logReader != null) {
+        this.logReader = getLogReader()
+        this.thread = Thread(runnable()).apply {
+            start()
+        }
+    }
+
+    private fun runnable(): Runnable {
+        return Runnable {
+            try {
+                while (!done && logReader != null) {
                     val logLine = logReader?.readLine()
                     if (!logLine.isNullOrEmpty()) {
+                        if (!isValidLog(logLine)) continue
                         val logType = getLogType(logLine)
                         if (isTargetType(logType) && isContainTargetWord(logLine)) {
                             listener?.onOutput(logType, logLine)
@@ -91,9 +125,9 @@ class ViewableLoggerViewModel(context: Context,
                         }
                     }
                 }
-            }.start()
-        } catch (e: Exception) {
-            android.util.Log.e("TestApp", "logging", e)
+            } catch (e: Exception) {
+                InnerLogger.e("logging", e)
+            }
         }
     }
 
@@ -110,9 +144,40 @@ class ViewableLoggerViewModel(context: Context,
     private fun isContainTargetWord(logLine: String): Boolean {
         if (filterWords.size == 0) return true
         for (filter in filterWords) {
-            if (logLine.indexOf(filter) != -1) return true
+            if (-1 < logLine.indexOf(filter)) return true
         }
         return false
+    }
+
+    private fun isValidLog(logLine: String): Boolean {
+        defaultExclusionWords.forEach {
+            if (-1 < logLine.indexOf(it)) return false
+        }
+        exclusionWords.forEach {
+            if (-1 < logLine.indexOf(it)) return false
+        }
+        getDate(logLine)?.let { logTime ->
+            return startTime.before(logTime)
+        }
+        return true
+    }
+
+    private fun getDate(logLine: String): Date? {
+        try {
+            logLine.substring(0, 1).toInt()
+        } catch (e: Exception) {
+            return null
+        }
+        try {
+            val currentYear = Calendar.getInstance().apply {
+                time = startTime
+            }.get(Calendar.YEAR)
+            val oldFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS")
+            val logLines = logLine.split(" ")
+            return oldFormat.parse("${currentYear}-${logLines[0]} ${logLines[1]}")
+        } catch (e: Exception) {
+            return null
+        }
     }
 
     private fun getLogType(logLine: String): LogType {
