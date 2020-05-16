@@ -42,13 +42,13 @@ class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListene
         attrs,
         defStyleAttr
     ) {
-        this.adapter = ViewableLoggerAdapter(context)
         this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter, attrs).apply {
             listener = this@ViewableLogger
         }
     }
 
     init {
+        this.adapter = ViewableLoggerAdapter(context)
         layoutManager = LinearLayoutManager(context).apply {
             stackFromEnd = true
         }
