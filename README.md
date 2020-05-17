@@ -24,7 +24,7 @@ repositories {
 
 dependencies
 ```gradle
-implementation 'com.github.popbrain:naked4u:1.1.1'
+implementation 'com.github.popbrain:naked4u:1.2.0'
 
 // naked4u using recyclerview
 implementation "androidx.recyclerview:recyclerview:+"
