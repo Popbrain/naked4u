@@ -20,11 +20,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import io.popbrain.naked4u.Color.Companion.Green
+import io.popbrain.naked4u.Color.Companion.Red
+import io.popbrain.naked4u.Color.Companion.White
+import io.popbrain.naked4u.Color.Companion.Yellow
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
@@ -39,18 +41,19 @@ class ViewableLoggerViewModel(context: Context,
 
     private var logReader: BufferedReader? = null
     private var done = true
-    private val filterWords = ArrayList<String>()
+    private val filterWords = ArrayList<Pair<String, LogColor>>()
     private val exclusionWords = ArrayList<String>()
     private val defaultExclusionWords = ArrayList<String>().apply {
         add(InnerLogger.TAG)
         add("ViewRootImpl")
         add("zygote64")
+        add("OpenGLRenderer")
     }
     private var filterType = LogType.VERBOSE
     private val logPatternStr =
         """^\d{2}-\d{2}\s*\d{2}:\d{2}:\d{2}.\d{3}\s*[0-9]*\s*[0-9]*\s([A-Z])\s*"""
     private val logPattern = Pattern.compile(logPatternStr)
-    private var backgroundColor: String = "#000000"
+    private var defaultRowBackgroundColor = "#000000"
     private var thread: Thread? = null
     var listener: OnViewableLoggerListener? = null
     var debugColor = 0
@@ -73,16 +76,20 @@ class ViewableLoggerViewModel(context: Context,
     fun backgroundColor(background: Drawable) {
         try {
             if (background is ColorDrawable) {
-                this.backgroundColor = background.color.toColorString()
-                this.adapter.setRowBackgroundColor(this.backgroundColor)
+                this.defaultRowBackgroundColor = background.color.toColorString()
+//                this.adapter.setRowBackgroundColor(this.defaultRowBackgroundColor)
             }
         } catch (e: java.lang.Exception){
             InnerLogger.e("toColorString()", e)
         }
     }
-    fun addFilter(filter: String) = this.filterWords.add(filter)
-    fun addFilter(filter: Array<String>) = this.filterWords.addAll(filter)
+    fun addFilter(filter: String) = this.addFilter(filter, LogColor())
+    fun addFilter(filter: String, color: LogColor) = this.filterWords.add(filter to color)
+    fun addFilter(filter: Array<String>) =
+        filter.forEach { this.filterWords.add(it to LogColor()) }
+    fun addFilter(filter: Array<Pair<String, LogColor>>) = this.filterWords.addAll(filter)
     fun clearFilter() = this.filterWords.clear()
+    fun clearDefaultExclusion() = this.defaultExclusionWords.clear()
     fun addExclusion(exclude: String) = this.exclusionWords.add(exclude)
     fun addExclusion(excludes: Array<String>) = this.exclusionWords.addAll(excludes)
     fun clearExclusion() = this.exclusionWords.clear()
@@ -113,15 +120,22 @@ class ViewableLoggerViewModel(context: Context,
             try {
                 while (!done && logReader != null) {
                     val logLine = logReader?.readLine()
-                    if (!logLine.isNullOrEmpty()) {
-                        if (!isValidLog(logLine)) continue
-                        val logType = getLogType(logLine)
-                        if (isTargetType(logType) && isContainTargetWord(logLine)) {
-                            listener?.onOutput(logType, logLine)
-                            runOnUIThread {
-                                addLog(Log(logType, logLine))
-                            }
-
+//                    if (!logLine.isNullOrEmpty()) {
+//                        if (isContainExclusionWord(logLine) || !isValidDate(logLine)) continue
+//                        val logType = getLogType(logLine)
+//                        val (isContain, logColor) = isContainTargetWord(logLine)
+//                        if (isTargetType(logType) && isContain) {
+//                            listener?.onOutput(logType, logLine)
+//                            runOnUIThread {
+//                                addLog(Log(logType, logLine, logColor))
+//                            }
+//                        }
+//                    }
+                    val (isValid, log) = isValidLog(logLine)
+                    if (isValid) {
+                        runOnUIThread {
+                            addLog(log)
+                            listener?.onOutput(log.type, log.contents)
                         }
                     }
                 }
@@ -132,30 +146,62 @@ class ViewableLoggerViewModel(context: Context,
     }
 
     private fun addLog(log: Log) {
-        this.adapter.logs.add(log)
-        this.adapter.notifyItemInserted(adapter.logs.size)
+        this.adapter.addLine(log)
+        this.adapter.notifyItemInserted(adapter.getLineSize())
     }
 
+    private fun isValidLog(logLine: String?): Pair<Boolean, Log> {
+        fun invalid(): Pair<Boolean, Log> = false to Log(LogType.VERBOSE, "", LogColor())
+        if (logLine.isNullOrEmpty() || isContainExclusionWord(logLine) || !isValidDate(logLine))
+            return invalid()
+        val (isContain, customLogColor) = isContainTargetWord(logLine)
+        if (!isContain) return invalid()
+        val (logType, defaultLogColor) = getLogType(logLine)
+        if (!isTargetType(logType)) return invalid()
+        val logColor = LogColor().apply {
+            val textColor = if (customLogColor.getTextColor() != 0) customLogColor.getTextColor() else defaultLogColor.getTextColor()
+            setTextColor(textColor)
+            val bgColor = if (customLogColor.getRowBackgroundColor() != 0) customLogColor.getRowBackgroundColor() else defaultLogColor.getRowBackgroundColor()
+            setRowBackgroundColor(bgColor)
+        }
+        return true to Log(logType, logLine, logColor)
+    }
+
+
+    /**
+     * Check the type of a log
+     */
     private fun isTargetType(logType: LogType): Boolean {
         return (filterType == LogType.VERBOSE ||
                 logType == filterType)
     }
 
-    private fun isContainTargetWord(logLine: String): Boolean {
-        if (filterWords.size == 0) return true
+    /**
+     * Check filtering word contained.
+     * Is contain target word in a log line.
+     *
+     * @param logLine log
+     * @return Boolean : isContain / LogColor : custom color
+     */
+    private fun isContainTargetWord(logLine: String): Pair<Boolean, LogColor> {
+        if (filterWords.size == 0) return true to LogColor()
         for (filter in filterWords) {
-            if (-1 < logLine.indexOf(filter)) return true
+            if (-1 < logLine.indexOf(filter.first)) return true to filter.second
+        }
+        return false to LogColor()
+    }
+
+    private fun isContainExclusionWord(logLine: String): Boolean {
+        defaultExclusionWords.forEach {
+            if (-1 < logLine.indexOf(it)) return true
+        }
+        exclusionWords.forEach {
+            if (-1 < logLine.indexOf(it)) return true
         }
         return false
     }
 
-    private fun isValidLog(logLine: String): Boolean {
-        defaultExclusionWords.forEach {
-            if (-1 < logLine.indexOf(it)) return false
-        }
-        exclusionWords.forEach {
-            if (-1 < logLine.indexOf(it)) return false
-        }
+    private fun isValidDate(logLine: String): Boolean {
         getDate(logLine)?.let { logTime ->
             return startTime.before(logTime)
         }
@@ -180,28 +226,37 @@ class ViewableLoggerViewModel(context: Context,
         }
     }
 
-    private fun getLogType(logLine: String): LogType {
+    private fun getLogType(logLine: String): Pair<LogType, LogColor> {
         val m = logPattern.matcher(logLine)
-        val debugType = LogType.DEBUG.apply {
-            color = if (debugColor == 0) "#01DF01" else debugColor.toColorString()
+        fun createLogColor(textColor: String): LogColor = LogColor().apply{
+            setTextColor(textColor)
+            setRowBackgroundColor(defaultRowBackgroundColor)
         }
+        val debugResult = LogType.DEBUG to
+                (if (debugColor == 0) Green else debugColor.toColorString()).run {
+                    createLogColor(this)
+                }
         if (m.find()) {
             val logType = m.group(1)
             return when (logType) {
-                "D" -> debugType
-                "I" -> LogType.INFO.apply {
-                    color = if (infoColor == 0) "#FFFFFF" else infoColor.toColorString()
-                }
-                "W" -> LogType.WARN.apply {
-                    color = if (warnColor == 0) "#FFFF00" else warnColor.toColorString()
-                }
-                "E" -> LogType.ERROR.apply {
-                    color = if (errorColor == 0) "#FF0000" else errorColor.toColorString()
-                }
-                else -> debugType
+                "D" -> debugResult
+                "I" -> LogType.INFO to
+                        (if (infoColor == 0) White else infoColor.toColorString()).run {
+                            createLogColor(this)
+                        }
+
+                "W" -> LogType.WARN to
+                        (if (warnColor == 0) Yellow else warnColor.toColorString()).run {
+                            createLogColor(this)
+                        }
+                "E" -> LogType.ERROR to
+                        (if (errorColor == 0) Red else errorColor.toColorString()).run {
+                            createLogColor(this)
+                        }
+                else -> debugResult
             }
         }
-        return debugType
+        return debugResult
     }
 
     private fun initAttr(context: Context, attr: AttributeSet) {
@@ -253,7 +308,8 @@ class ViewableLoggerViewModel(context: Context,
                 }
             }
             typedArray.recycle()
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
+            InnerLogger.e("initAttr", e)
         }
     }
 }

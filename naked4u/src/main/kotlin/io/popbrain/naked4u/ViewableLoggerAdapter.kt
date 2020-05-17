@@ -30,12 +30,11 @@ import androidx.recyclerview.widget.RecyclerView
 class ViewableLoggerAdapter(context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     
     private val inflater = LayoutInflater.from(context)
-    private var rowBackgroundColor = "#000000"
-    val logs = ArrayList<Log>()
+    private val logs = ArrayList<Log>()
 
-    fun setRowBackgroundColor(colorStr: String) {
-        this.rowBackgroundColor = colorStr
-    }
+    fun addLine(log: Log) = logs.add(log)
+    fun getLineSize(): Int = logs.size
+
     fun clear() {
         val size = itemCount
         logs.clear()
@@ -53,8 +52,8 @@ class ViewableLoggerAdapter(context: Context): RecyclerView.Adapter<RecyclerView
         when (holder) {
             is LogViewHolder -> {
                 holder.log.setText(logs[position].contents)
-                holder.log.setTextColor(Color.parseColor(logs[position].type.color))
-                holder.log.setBackgroundColor(Color.parseColor(rowBackgroundColor))
+                holder.log.setTextColor(logs[position].color.getTextColor())
+                holder.log.setBackgroundColor(logs[position].color.getRowBackgroundColor())
             }
         }
     }

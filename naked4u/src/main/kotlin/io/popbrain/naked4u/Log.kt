@@ -19,26 +19,37 @@ package io.popbrain.naked4u
  * Log
  * Created by garhira on 2020-02-09.
  */
-data class Log(val type: LogType, val contents: String)
+data class Log(val type: LogType, val contents: String, val color: LogColor)
 
 enum class LogType(val code: Int) {
     VERBOSE(0),
     DEBUG(1),
     INFO(2),
     WARN(3),
-    ERROR(4);
+    ERROR(4),
+    CUSTOM(5);
 
-    open var color: String = "#FFFFFF"
+//    open var color: String = "#FFFFFF"
     companion object {
         fun get(code: Int): LogType {
             return when (code) {
+                VERBOSE.code -> VERBOSE
                 DEBUG.code -> DEBUG
                 INFO.code -> INFO
                 WARN.code -> WARN
                 ERROR.code -> ERROR
-                else -> VERBOSE
+                else -> CUSTOM
             }
         }
+    }
+}
+
+class Color {
+    companion object {
+        const val Green = "#01DF01"
+        const val White = "#FFFFFF"
+        const val Yellow = "#FFFF00"
+        const val Red = "#FF0000"
     }
 }
 

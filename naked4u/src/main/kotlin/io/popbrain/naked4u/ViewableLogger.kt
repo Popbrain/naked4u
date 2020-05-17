@@ -18,7 +18,6 @@ package io.popbrain.naked4u
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,10 +31,14 @@ class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListene
     private val mViewModel: ViewableLoggerViewModel
     private var clientListener: OnViewableLoggerListener? = null
     constructor(context: Context) : super(context) {
-        this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter)
+        this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter).apply {
+            listener = this@ViewableLogger
+        }
     }
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter, attrs)
+        this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter, attrs).apply {
+            listener = this@ViewableLogger
+        }
     }
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
@@ -65,6 +68,11 @@ class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListene
         return this
     }
 
+    override fun addFilter(filterStr: String, color: LogColor): ViewableLogger {
+        this.mViewModel.addFilter(filterStr, color)
+        return this
+    }
+
     override fun addFilter(filterList: Array<String>): ViewableLogger {
         this.mViewModel.addFilter(filterList)
         return this
@@ -87,9 +95,9 @@ class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListene
         return this
     }
 
-    override fun clearExclusion() {
-        this.mViewModel.clearExclusion()
-    }
+    override fun clearExclusion() = this.mViewModel.clearExclusion()
+
+    override fun clearDefaultExclusion() = this.mViewModel.clearDefaultExclusion()
 
     override fun setDebugColor(color: String): ViewableLogger {
         setDebugColor(Color.parseColor(color))
@@ -151,10 +159,12 @@ class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListene
     }
 
     override fun onViewAttachedToWindow(v: View?) {
+        InnerLogger.d("onViewAttachedToWindow")
     }
 
     override fun onOutput(type: LogType, logLine: String) {
         adapter?.let {
+            InnerLogger.d("Log count : ${it.itemCount}")
             if (0 < it.itemCount) smoothScrollToPosition(it.itemCount + 1)
         }
         this.clientListener?.onOutput(type, logLine)

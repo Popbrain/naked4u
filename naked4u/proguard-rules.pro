@@ -5,6 +5,7 @@
 -printmapping mapping.txt
 
 -keep public enum io.popbrain.naked4u.LogType { *; }
+-keep public class io.popbrain.naked4u.LogColor { *; }
 -keep public class io.popbrain.naked4u.ViewableLogger { *; }
 -keep public class io.popbrain.naked4u.BasicViewableLogger { *; }
 -keep public class io.popbrain.naked4u.BaseBasicViewableLogger {

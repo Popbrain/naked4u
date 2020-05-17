@@ -12,6 +12,8 @@ interface NakedLogger {
 
     fun addFilter(filterList: Array<String>): NakedLogger
 
+    fun addFilter(filterStr: String, color: LogColor): NakedLogger
+
     fun clearFilter()
 
     fun filterByType(logType: LogType): NakedLogger
@@ -21,6 +23,8 @@ interface NakedLogger {
     fun addExclusion(excludes: Array<String>): NakedLogger
 
     fun clearExclusion()
+
+    fun clearDefaultExclusion()
 
     fun setDebugColor(color: String): NakedLogger
 

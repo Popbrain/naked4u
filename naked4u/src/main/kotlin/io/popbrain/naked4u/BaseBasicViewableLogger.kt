@@ -54,6 +54,9 @@ abstract class BaseBasicViewableLogger: FrameLayout, NakedLogger {
     override fun addFilter(filterList: Array<String>): NakedLogger =
         currentViewableLogger.addFilter(filterList)
 
+    override fun addFilter(filterStr: String, color: LogColor): NakedLogger =
+        currentViewableLogger.addFilter(filterStr, color)
+
     override fun clearFilter() = currentViewableLogger.clearFilter()
 
     override fun filterByType(logType: LogType): NakedLogger =
@@ -66,6 +69,8 @@ abstract class BaseBasicViewableLogger: FrameLayout, NakedLogger {
         currentViewableLogger.addExclusion(excludes)
 
     override fun clearExclusion() = currentViewableLogger.clearExclusion()
+
+    override fun clearDefaultExclusion() = currentViewableLogger.clearDefaultExclusion()
 
     override fun setDebugColor(color: String): NakedLogger =
         currentViewableLogger.setDebugColor(color)
