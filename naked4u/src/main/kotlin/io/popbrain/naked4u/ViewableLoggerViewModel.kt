@@ -48,6 +48,9 @@ class ViewableLoggerViewModel(context: Context,
         add("ViewRootImpl")
         add("zygote64")
         add("OpenGLRenderer")
+        add("InputMethodManager")
+        add("InputEventReceiver")
+        add("performLongClick() is called")
     }
     private var filterType = LogType.VERBOSE
     private val logPatternStr =
