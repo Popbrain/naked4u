@@ -48,4 +48,6 @@ interface NakedLogger {
 
     fun stop()
 
+    fun popupEnable(enable: Boolean): NakedLogger
+
 }

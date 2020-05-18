@@ -16,7 +16,6 @@
 package io.popbrain.naked4u
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +30,7 @@ class ViewableLoggerAdapter(context: Context): RecyclerView.Adapter<RecyclerView
     
     private val inflater = LayoutInflater.from(context)
     private val logs = ArrayList<Log>()
+    private var listener: Listener? = null
 
     fun addLine(log: Log) = logs.add(log)
     fun getLineSize(): Int = logs.size
@@ -39,6 +39,15 @@ class ViewableLoggerAdapter(context: Context): RecyclerView.Adapter<RecyclerView
         val size = itemCount
         logs.clear()
         notifyItemRangeRemoved(0, size)
+    }
+
+    interface Listener {
+        fun onClick(position: Int, log: Log, view: View)
+        fun onLongClick(position: Int, log: Log, view: View): Boolean
+    }
+
+    fun setListener(l: Listener) {
+        this.listener = l
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -54,6 +63,14 @@ class ViewableLoggerAdapter(context: Context): RecyclerView.Adapter<RecyclerView
                 holder.log.setText(logs[position].contents)
                 holder.log.setTextColor(logs[position].color.getTextColor())
                 holder.log.setBackgroundColor(logs[position].color.getRowBackgroundColor())
+                holder.log.setOnClickListener { view ->
+                    listener?.onClick(position, logs[position], view)
+                }
+                holder.log.setOnLongClickListener { view ->
+                    listener?.let { l ->
+                        l.onLongClick(position, logs[position], view)
+                    }?: true
+                }
             }
         }
     }

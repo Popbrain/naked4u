@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ViewableLogger</string>
 
+    <string name="label_copy">COPY</string>
     <string name="label_clear">❌</string>
+
+    <string name="toast_copy">COPIED!!</string>
 </resources>

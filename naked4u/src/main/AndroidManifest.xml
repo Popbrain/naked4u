@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="io.popbrain.naked4u" />
+<manifest package="io.popbrain.naked4u" />

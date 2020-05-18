@@ -15,6 +15,8 @@
  */
 package io.popbrain.naked4u
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Point
 import android.os.Handler
@@ -68,5 +70,15 @@ class DisplayUtil(context: Context) {
             Surface.ROTATION_90, Surface.ROTATION_270 -> 1
             else -> 0
         }
+    }
+}
+
+fun Context.copyToClipboard(label: String = "naked4u_copy_log", text: String) {
+    try {
+        (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)?.let {
+            it.setPrimaryClip(ClipData.newPlainText(label, text))
+        }
+    } catch (e: Exception) {
+
     }
 }

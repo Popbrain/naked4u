@@ -103,6 +103,9 @@ abstract class BaseBasicViewableLogger: FrameLayout, NakedLogger {
 
     override fun stop() = currentViewableLogger.stop()
 
+    override fun popupEnable(enable: Boolean): NakedLogger =
+        currentViewableLogger.popupEnable(enable)
+
     private fun setup(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         val displayUtil = DisplayUtil(context)
         addView(currentViewableLogger)

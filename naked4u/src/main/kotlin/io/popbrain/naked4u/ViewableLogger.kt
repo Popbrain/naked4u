@@ -19,6 +19,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -27,15 +28,19 @@ import androidx.recyclerview.widget.RecyclerView
  * Created by garhira on 2020-02-09.
  */
 class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListener,
-    OnViewableLoggerListener {
+    OnViewableLoggerListener, ViewableLoggerAdapter.Listener {
     private val mViewModel: ViewableLoggerViewModel
     private var clientListener: OnViewableLoggerListener? = null
+    private var popupEnable = true
+
     constructor(context: Context) : super(context) {
+        setup()
         this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter).apply {
             listener = this@ViewableLogger
         }
     }
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        setup()
         this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter, attrs).apply {
             listener = this@ViewableLogger
         }
@@ -45,17 +50,27 @@ class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListene
         attrs,
         defStyleAttr
     ) {
+        setup()
         this.mViewModel = ViewableLoggerViewModel(context, adapter as ViewableLoggerAdapter, attrs).apply {
             listener = this@ViewableLogger
         }
     }
 
-    init {
-        this.adapter = ViewableLoggerAdapter(context)
-        layoutManager = LinearLayoutManager(context).apply {
+    private fun setup() {
+        this.adapter = ViewableLoggerAdapter(context).apply {
+            setListener(this@ViewableLogger)
+        }
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false).apply {
             stackFromEnd = true
+            isVerticalScrollBarEnabled = true
+//            isSmoothScrollbarEnabled = true
+            isScrollbarFadingEnabled = false
+//            setHasFixedSize(true)
         }
         addOnAttachStateChangeListener(this)
+        isVerticalScrollBarEnabled = true
+        isScrollbarFadingEnabled = false
+//        setHasFixedSize(true)
     }
 
     override fun setOnViewableLoggerListener(listener: OnViewableLoggerListener): ViewableLogger {
@@ -170,4 +185,20 @@ class ViewableLogger: RecyclerView, NakedLogger, View.OnAttachStateChangeListene
         this.clientListener?.onOutput(type, logLine)
     }
 
+    override fun popupEnable(enable: Boolean): NakedLogger {
+        this.popupEnable = enable
+        return this
+    }
+
+    override fun onClick(position: Int, log: Log, view: View) {
+        NakedDialog(context, log).show()
+    }
+
+    override fun onLongClick(position: Int, log: Log, view: View): Boolean {
+        context.copyToClipboard(text = log.contents)
+        // TODO Customize toast
+        Toast.makeText(context, context.getString(R.string.toast_copy), Toast.LENGTH_SHORT)
+            .show()
+        return true
+    }
 }
