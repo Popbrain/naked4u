@@ -120,17 +120,6 @@ class ViewableLoggerViewModel(context: Context,
             try {
                 while (!done && logReader != null) {
                     val logLine = logReader?.readLine()
-//                    if (!logLine.isNullOrEmpty()) {
-//                        if (isContainExclusionWord(logLine) || !isValidDate(logLine)) continue
-//                        val logType = getLogType(logLine)
-//                        val (isContain, logColor) = isContainTargetWord(logLine)
-//                        if (isTargetType(logType) && isContain) {
-//                            listener?.onOutput(logType, logLine)
-//                            runOnUIThread {
-//                                addLog(Log(logType, logLine, logColor))
-//                            }
-//                        }
-//                    }
                     val (isValid, log) = isValidLog(logLine)
                     if (isValid) {
                         runOnUIThread {
@@ -218,7 +207,7 @@ class ViewableLoggerViewModel(context: Context,
             val currentYear = Calendar.getInstance().apply {
                 time = startTime
             }.get(Calendar.YEAR)
-            val oldFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS")
+            val oldFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
             val logLines = logLine.split(" ")
             return oldFormat.parse("${currentYear}-${logLines[0]} ${logLines[1]}")
         } catch (e: Exception) {
