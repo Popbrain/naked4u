@@ -8,7 +8,7 @@ This library is to confirm an application log that during for QAs, Debuggers, Te
 <table style="border-style: none;">
 <tr style="border-style: none;">
 <td style="border-style: none;"><img src="./doc/demo.gif" width="300px" /></td>
-<td style="border-style: none;"><img src="./doc/demo2.gif" width="300px" /></td>
+<td style="border-style: none;"><img src="./doc/demo3.gif" width="300px" /></td>
 </tr>
 </table>
 
