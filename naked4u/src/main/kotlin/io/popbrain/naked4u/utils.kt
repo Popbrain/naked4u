@@ -90,8 +90,8 @@ fun Dialog.sendToSlack(message: String) {
         `package` = context.getString(R.string.package_slack)
         action = Intent.ACTION_SEND
         type = "text/plain"
+        putExtra(Intent.EXTRA_SUBJECT, "Logs")
         putExtra(Intent.EXTRA_TEXT, message)
-//        putExtra(Intent.EXTRA_SUBJECT, "")
 //        putExtra(Intent.EXTRA_STREAM,"")
     }
     context.startActivity(intent)
