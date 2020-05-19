@@ -49,7 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
-                android:text="@string/label_send_to_slack" />
+                android:text="@string/label_post_to_slack" />
         </LinearLayout>
     </LinearLayout>
 

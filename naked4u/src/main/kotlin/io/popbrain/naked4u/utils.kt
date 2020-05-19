@@ -16,10 +16,7 @@
 package io.popbrain.naked4u
 
 import android.app.Dialog
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.graphics.Point
 import android.os.Handler
 import android.os.Looper
@@ -27,6 +24,7 @@ import android.util.DisplayMetrics
 import android.view.Display
 import android.view.Surface
 import android.view.WindowManager
+import android.widget.Toast
 
 /**
  * utils
@@ -86,12 +84,34 @@ fun Context.copyToClipboard(label: String = "naked4u_copy_log", text: String) {
 }
 
 fun Dialog.sendToSlack(message: String) {
-    val intent = Intent().apply {
-        `package` = context.getString(R.string.package_slack)
-        action = Intent.ACTION_SEND
+    fun getComponent(`package`: String): ComponentName? {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+        }
+        val resolveInfoList = context.packageManager.queryIntentActivities(shareIntent, 0)
+        resolveInfoList.forEach {
+            val packageName = it.activityInfo.packageName
+            if (packageName.equals(`package`)) {
+                    return ComponentName(packageName, it.activityInfo.name)
+            }
+        }
+        return null
+    }
+    var newMessage = message
+    if (500 < message.length) {
+        newMessage = message.substring(0, 499)
+        Toast.makeText(context, R.string.warn_over_500_length, Toast.LENGTH_SHORT).show()
+    }
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        val targetPackage = context.getString(R.string.package_slack)
+        getComponent(targetPackage)?.let {
+            component = it
+        }?: run {
+            `package` = targetPackage
+        }
         type = "text/plain"
         putExtra(Intent.EXTRA_SUBJECT, "Logs")
-        putExtra(Intent.EXTRA_TEXT, message)
+        putExtra(Intent.EXTRA_TEXT, newMessage)
 //        putExtra(Intent.EXTRA_STREAM,"")
     }
     context.startActivity(intent)

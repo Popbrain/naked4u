@@ -2,10 +2,12 @@
     <string name="app_name">ViewableLogger</string>
 
     <string name="label_copy">COPY</string>
-    <string name="label_send_to_slack">Send to Slack</string>
+    <string name="label_post_to_slack">Post to Slack</string>
     <string name="label_clear">❌</string>
 
     <string name="toast_copy">COPIED!!</string>
 
     <string name="package_slack">com.Slack</string>
+
+    <string name="warn_over_500_length">Could not send more than 500 characters.\nIt was reduced and sent.</string>
 </resources>
