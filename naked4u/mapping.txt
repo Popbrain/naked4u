@@ -1,6 +1,6 @@
 # compiler: R8
 # compiler_version: 1.5.68
-# pg_map_id: 2223429
+# pg_map_id: 56239ea
 io.popbrain.naked4u.BaseBasicViewableLogger -> io.popbrain.naked4u.BaseBasicViewableLogger:
     1:1:void io.popbrain.naked4u.DisplayUtil.<init>(android.content.Context):0:0 -> setup
     1:1:void setup(android.content.Context,android.util.AttributeSet,int):0 -> setup
@@ -59,15 +59,48 @@ io.popbrain.naked4u.Log -> a.a.a.c:
     io.popbrain.naked4u.LogType type -> a
     io.popbrain.naked4u.LogColor color -> c
     java.lang.String contents -> b
-    java.lang.String getContents() -> a
-    io.popbrain.naked4u.LogType getType() -> b
+    io.popbrain.naked4u.LogType getType() -> a
 io.popbrain.naked4u.LogType$Companion -> io.popbrain.naked4u.LogType$a:
     1:1:void <init>():0:0 -> <init>
     1:1:void <init>(kotlin.jvm.internal.DefaultConstructorMarker):0 -> <init>
     io.popbrain.naked4u.LogType get(int) -> a
-io.popbrain.naked4u.UtilsKt -> a.a.a.e:
+io.popbrain.naked4u.NakedDialog -> a.a.a.d:
+    io.popbrain.naked4u.Log log -> a
+    1:1:io.popbrain.naked4u.LogColor io.popbrain.naked4u.Log.getColor():0:0 -> <init>
+    1:1:void <init>(android.content.Context,io.popbrain.naked4u.Log):0 -> <init>
+    2:2:void <init>(android.content.Context,io.popbrain.naked4u.Log):0:0 -> <init>
+    3:3:io.popbrain.naked4u.LogColor io.popbrain.naked4u.Log.getColor():0:0 -> <init>
+    3:3:void <init>(android.content.Context,io.popbrain.naked4u.Log):0 -> <init>
+    4:4:void <init>(android.content.Context,io.popbrain.naked4u.Log):0:0 -> <init>
+    5:5:java.lang.String io.popbrain.naked4u.Log.getContents():0:0 -> <init>
+    5:5:void <init>(android.content.Context,io.popbrain.naked4u.Log):0 -> <init>
+    6:6:void <init>(android.content.Context,io.popbrain.naked4u.Log):0:0 -> <init>
+    7:7:io.popbrain.naked4u.LogColor io.popbrain.naked4u.Log.getColor():0:0 -> <init>
+    7:7:void <init>(android.content.Context,io.popbrain.naked4u.Log):0 -> <init>
+    8:8:void <init>(android.content.Context,io.popbrain.naked4u.Log):0:0 -> <init>
+io.popbrain.naked4u.NakedDialog$4 -> a.a.a.d$a:
+    android.content.Context $context -> b
+    io.popbrain.naked4u.NakedDialog this$0 -> a
+    1:1:io.popbrain.naked4u.Log io.popbrain.naked4u.NakedDialog.access$getLog$p(io.popbrain.naked4u.NakedDialog):0:0 -> onClick
+    1:1:void onClick(android.view.View):0 -> onClick
+    2:2:java.lang.String io.popbrain.naked4u.Log.getContents():0:0 -> onClick
+    2:2:void onClick(android.view.View):0 -> onClick
+    3:3:void onClick(android.view.View):0:0 -> onClick
+io.popbrain.naked4u.NakedDialog$5 -> a.a.a.d$b:
+    io.popbrain.naked4u.NakedDialog this$0 -> a
+    1:1:io.popbrain.naked4u.Log io.popbrain.naked4u.NakedDialog.access$getLog$p(io.popbrain.naked4u.NakedDialog):0:0 -> onClick
+    1:1:void onClick(android.view.View):0 -> onClick
+    2:2:java.lang.String io.popbrain.naked4u.Log.getContents():0:0 -> onClick
+    2:2:void onClick(android.view.View):0 -> onClick
+    3:3:void io.popbrain.naked4u.UtilsKt.sendToSlack(android.app.Dialog,java.lang.String):0:0 -> onClick
+    3:3:void onClick(android.view.View):0 -> onClick
+io.popbrain.naked4u.NakedDialog$6 -> a.a.a.d$c:
+    io.popbrain.naked4u.NakedDialog this$0 -> a
+io.popbrain.naked4u.UtilsKt -> a.a.a.f:
+    1:1:void copyToClipboard(android.content.Context,java.lang.String,java.lang.String):0:0 -> a
+    1:1:void copyToClipboard$default(android.content.Context,java.lang.String,java.lang.String,int,java.lang.Object):0 -> a
     java.lang.String toColorString(int) -> a
-io.popbrain.naked4u.UtilsKt$runOnUIThread$1 -> a.a.a.d:
+io.popbrain.naked4u.UtilsKt$runOnUIThread$1 -> a.a.a.e:
     kotlin.jvm.functions.Function0 $action -> a
 io.popbrain.naked4u.ViewableLogger -> io.popbrain.naked4u.ViewableLogger:
     1:1:void io.popbrain.naked4u.ViewableLoggerViewModel.<init>(android.content.Context,io.popbrain.naked4u.ViewableLoggerAdapter,android.util.AttributeSet,int,kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
@@ -98,6 +131,9 @@ io.popbrain.naked4u.ViewableLogger -> io.popbrain.naked4u.ViewableLogger:
     1:1:void clearExclusion():0 -> clearExclusion
     1:1:void io.popbrain.naked4u.ViewableLoggerViewModel.clearFilter():0:0 -> clearFilter
     1:1:void clearFilter():0 -> clearFilter
+    1:1:java.lang.String io.popbrain.naked4u.Log.getContents():0:0 -> onLongClick
+    1:1:boolean onLongClick(int,io.popbrain.naked4u.Log,android.view.View):0 -> onLongClick
+    2:2:boolean onLongClick(int,io.popbrain.naked4u.Log,android.view.View):0:0 -> onLongClick
     1:1:void io.popbrain.naked4u.ViewableLoggerViewModel.finish():0:0 -> onViewDetachedFromWindow
     1:1:void onViewDetachedFromWindow(android.view.View):0 -> onViewDetachedFromWindow
     2:2:void onViewDetachedFromWindow(android.view.View):0:0 -> onViewDetachedFromWindow
@@ -109,6 +145,9 @@ io.popbrain.naked4u.ViewableLogger -> io.popbrain.naked4u.ViewableLogger:
     1:1:io.popbrain.naked4u.ViewableLogger setInfoColor(int):0 -> setInfoColor
     1:1:void io.popbrain.naked4u.ViewableLoggerViewModel.setWarnColor(int):0:0 -> setWarnColor
     1:1:io.popbrain.naked4u.ViewableLogger setWarnColor(int):0 -> setWarnColor
+    1:1:void io.popbrain.naked4u.ViewableLoggerAdapter.setListener(io.popbrain.naked4u.ViewableLoggerAdapter$Listener):0:0 -> setup
+    1:1:void setup():0 -> setup
+    2:2:void setup():0:0 -> setup
     1:1:void io.popbrain.naked4u.ViewableLoggerViewModel.start():0:0 -> start
     1:1:void start():0 -> start
     2:2:java.io.BufferedReader io.popbrain.naked4u.ViewableLoggerViewModel.getLogReader():0:0 -> start
@@ -127,7 +166,8 @@ io.popbrain.naked4u.ViewableLogger -> io.popbrain.naked4u.ViewableLogger:
     5:5:void start():0 -> start
     1:1:void io.popbrain.naked4u.ViewableLoggerViewModel.stop():0:0 -> stop
     1:1:void stop():0 -> stop
-io.popbrain.naked4u.ViewableLoggerAdapter -> a.a.a.f:
+io.popbrain.naked4u.ViewableLoggerAdapter -> a.a.a.g:
+    io.popbrain.naked4u.ViewableLoggerAdapter$Listener listener -> c
     android.view.LayoutInflater inflater -> a
     java.util.ArrayList logs -> b
     boolean addLine(io.popbrain.naked4u.Log) -> a
@@ -152,14 +192,39 @@ io.popbrain.naked4u.ViewableLoggerAdapter -> a.a.a.f:
     11:11:io.popbrain.naked4u.LogColor io.popbrain.naked4u.Log.getColor():0:0 -> onBindViewHolder
     11:11:void onBindViewHolder(androidx.recyclerview.widget.RecyclerView$ViewHolder,int):0 -> onBindViewHolder
     12:12:void onBindViewHolder(androidx.recyclerview.widget.RecyclerView$ViewHolder,int):0:0 -> onBindViewHolder
+    13:13:android.widget.TextView io.popbrain.naked4u.ViewableLoggerAdapter$LogViewHolder.getLog():0:0 -> onBindViewHolder
+    13:13:void onBindViewHolder(androidx.recyclerview.widget.RecyclerView$ViewHolder,int):0 -> onBindViewHolder
+    14:14:void onBindViewHolder(androidx.recyclerview.widget.RecyclerView$ViewHolder,int):0:0 -> onBindViewHolder
+    15:15:android.widget.TextView io.popbrain.naked4u.ViewableLoggerAdapter$LogViewHolder.getLog():0:0 -> onBindViewHolder
+    15:15:void onBindViewHolder(androidx.recyclerview.widget.RecyclerView$ViewHolder,int):0 -> onBindViewHolder
+    16:16:void onBindViewHolder(androidx.recyclerview.widget.RecyclerView$ViewHolder,int):0:0 -> onBindViewHolder
     1:1:int getLayout(int):0:0 -> onCreateViewHolder
     1:1:androidx.recyclerview.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int):0 -> onCreateViewHolder
     2:2:androidx.recyclerview.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int):0:0 -> onCreateViewHolder
-io.popbrain.naked4u.ViewableLoggerAdapter$LogViewHolder -> a.a.a.f$a:
+io.popbrain.naked4u.ViewableLoggerAdapter$Listener -> a.a.a.g$a:
+io.popbrain.naked4u.ViewableLoggerAdapter$LogViewHolder -> a.a.a.g$b:
     android.widget.TextView log -> a
-io.popbrain.naked4u.ViewableLoggerAdapter$WhenMappings -> a.a.a.g:
+io.popbrain.naked4u.ViewableLoggerAdapter$WhenMappings -> a.a.a.h:
     int[] $EnumSwitchMapping$0 -> a
-io.popbrain.naked4u.ViewableLoggerViewModel -> a.a.a.i:
+io.popbrain.naked4u.ViewableLoggerAdapter$onBindViewHolder$1 -> a.a.a.g$c:
+    io.popbrain.naked4u.ViewableLoggerAdapter this$0 -> a
+    int $position -> b
+    1:1:io.popbrain.naked4u.ViewableLoggerAdapter$Listener io.popbrain.naked4u.ViewableLoggerAdapter.access$getListener$p(io.popbrain.naked4u.ViewableLoggerAdapter):0:0 -> onClick
+    1:1:void onClick(android.view.View):0 -> onClick
+    2:2:void onClick(android.view.View):0:0 -> onClick
+    3:3:java.util.ArrayList io.popbrain.naked4u.ViewableLoggerAdapter.access$getLogs$p(io.popbrain.naked4u.ViewableLoggerAdapter):0:0 -> onClick
+    3:3:void onClick(android.view.View):0 -> onClick
+    4:4:void onClick(android.view.View):0:0 -> onClick
+io.popbrain.naked4u.ViewableLoggerAdapter$onBindViewHolder$2 -> a.a.a.g$d:
+    io.popbrain.naked4u.ViewableLoggerAdapter this$0 -> a
+    int $position -> b
+    1:1:io.popbrain.naked4u.ViewableLoggerAdapter$Listener io.popbrain.naked4u.ViewableLoggerAdapter.access$getListener$p(io.popbrain.naked4u.ViewableLoggerAdapter):0:0 -> onLongClick
+    1:1:boolean onLongClick(android.view.View):0 -> onLongClick
+    2:2:boolean onLongClick(android.view.View):0:0 -> onLongClick
+    3:3:java.util.ArrayList io.popbrain.naked4u.ViewableLoggerAdapter.access$getLogs$p(io.popbrain.naked4u.ViewableLoggerAdapter):0:0 -> onLongClick
+    3:3:boolean onLongClick(android.view.View):0 -> onLongClick
+    4:4:boolean onLongClick(android.view.View):0:0 -> onLongClick
+io.popbrain.naked4u.ViewableLoggerViewModel -> a.a.a.j:
     java.lang.String logPatternStr -> g
     int errorColor -> n
     java.lang.String defaultRowBackgroundColor -> i
@@ -198,14 +263,14 @@ io.popbrain.naked4u.ViewableLoggerViewModel -> a.a.a.i:
     5:5:boolean isTargetType(io.popbrain.naked4u.LogType):0:0 -> f
     5:5:kotlin.Pair isValidLog(java.lang.String):0 -> f
     6:6:kotlin.Pair isValidLog(java.lang.String):0:0 -> f
-io.popbrain.naked4u.ViewableLoggerViewModel$getLogType$1 -> a.a.a.h:
+io.popbrain.naked4u.ViewableLoggerViewModel$getLogType$1 -> a.a.a.i:
     io.popbrain.naked4u.ViewableLoggerViewModel this$0 -> a
     1:1:java.lang.String io.popbrain.naked4u.ViewableLoggerViewModel.access$getDefaultRowBackgroundColor$p(io.popbrain.naked4u.ViewableLoggerViewModel):0:0 -> a
     1:1:io.popbrain.naked4u.LogColor invoke(java.lang.String):0 -> a
     2:2:io.popbrain.naked4u.LogColor invoke(java.lang.String):0:0 -> a
-io.popbrain.naked4u.ViewableLoggerViewModel$isValidLog$1 -> a.a.a.i$a:
+io.popbrain.naked4u.ViewableLoggerViewModel$isValidLog$1 -> a.a.a.j$a:
     io.popbrain.naked4u.ViewableLoggerViewModel$isValidLog$1 INSTANCE -> a
-io.popbrain.naked4u.ViewableLoggerViewModel$runnable$1 -> a.a.a.j:
+io.popbrain.naked4u.ViewableLoggerViewModel$runnable$1 -> a.a.a.k:
     io.popbrain.naked4u.ViewableLoggerViewModel this$0 -> a
     1:1:boolean io.popbrain.naked4u.ViewableLoggerViewModel.access$getDone$p(io.popbrain.naked4u.ViewableLoggerViewModel):0:0 -> run
     1:1:void run():0 -> run
@@ -227,7 +292,7 @@ io.popbrain.naked4u.ViewableLoggerViewModel$runnable$1 -> a.a.a.j:
     11:11:void io.popbrain.naked4u.UtilsKt.runOnUIThread(kotlin.jvm.functions.Function0):0:0 -> run
     11:11:void run():0 -> run
     12:12:void run():0:0 -> run
-io.popbrain.naked4u.ViewableLoggerViewModel$runnable$1$1 -> a.a.a.j$a:
+io.popbrain.naked4u.ViewableLoggerViewModel$runnable$1$1 -> a.a.a.k$a:
     io.popbrain.naked4u.Log $log -> b
     io.popbrain.naked4u.ViewableLoggerViewModel$runnable$1 this$0 -> a
     1:1:void invoke():0:0 -> invoke
@@ -252,4 +317,9 @@ io.popbrain.naked4u.ViewableLoggerViewModel$runnable$1$1 -> a.a.a.j$a:
     6:6:java.lang.Object invoke():0 -> invoke
     7:7:void invoke():0:0 -> invoke
     7:7:java.lang.Object invoke():0 -> invoke
-    8:8:java.lang.Object invoke():0:0 -> invoke
+    8:8:java.lang.String io.popbrain.naked4u.Log.getContents():0:0 -> invoke
+    8:8:void invoke():0 -> invoke
+    8:8:java.lang.Object invoke():0 -> invoke
+    9:9:void invoke():0:0 -> invoke
+    9:9:java.lang.Object invoke():0 -> invoke
+    10:10:java.lang.Object invoke():0:0 -> invoke
