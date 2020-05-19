@@ -8,8 +8,8 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/dialog_background"
         android:layout_margin="30dp"
+        android:background="@drawable/dialog_background"
         android:orientation="vertical">
 
         <TextView
@@ -19,8 +19,7 @@
             android:gravity="top|start"
             android:padding="10dp" />
 
-        <Button
-            android:id="@+id/copy_btn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="10dp"
@@ -28,7 +27,22 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:text="@string/label_copy" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/copy_btn"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/label_copy" />
+
+            <Button
+                android:id="@+id/send_slack_btn"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/label_send_to_slack" />
+        </LinearLayout>
     </LinearLayout>
 
     <ImageButton

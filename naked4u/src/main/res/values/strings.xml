@@ -2,7 +2,10 @@
     <string name="app_name">ViewableLogger</string>
 
     <string name="label_copy">COPY</string>
+    <string name="label_send_to_slack">Send to Slack</string>
     <string name="label_clear">❌</string>
 
     <string name="toast_copy">COPIED!!</string>
+
+    <string name="package_slack">com.Slack</string>
 </resources>

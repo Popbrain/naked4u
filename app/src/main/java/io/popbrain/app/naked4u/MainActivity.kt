@@ -1,10 +1,10 @@
 package io.popbrain.app.naked4u
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import io.popbrain.naked4u.BasicViewableLogger
 
 class MainActivity : AppCompatActivity() {

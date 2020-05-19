@@ -54,6 +54,9 @@ class NakedDialog(
                 .show()
             dismiss()
         }
+        findViewById<View>(R.id.send_slack_btn).setOnClickListener {
+            sendToSlack(log.contents)
+        }
         findViewById<View>(R.id.close_btn).setOnClickListener {
             dismiss()
         }

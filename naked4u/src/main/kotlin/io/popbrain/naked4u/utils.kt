@@ -15,9 +15,11 @@
  */
 package io.popbrain.naked4u
 
+import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Point
 import android.os.Handler
 import android.os.Looper
@@ -79,6 +81,18 @@ fun Context.copyToClipboard(label: String = "naked4u_copy_log", text: String) {
             it.setPrimaryClip(ClipData.newPlainText(label, text))
         }
     } catch (e: Exception) {
-
+        InnerLogger.e("Copy to clipboard.", e)
     }
+}
+
+fun Dialog.sendToSlack(message: String) {
+    val intent = Intent().apply {
+        `package` = context.getString(R.string.package_slack)
+        action = Intent.ACTION_SEND
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, message)
+//        putExtra(Intent.EXTRA_SUBJECT, "")
+//        putExtra(Intent.EXTRA_STREAM,"")
+    }
+    context.startActivity(intent)
 }
